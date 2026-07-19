@@ -127,7 +127,7 @@ This approach satisfies the assessment requirement of clearly distinguishing use
 
 ## 🔗 Backend Repository
 
-https://github.com/HtetO2Ko/Meeting-Room-Booking-API.git
+https://github.com/HtetO2Ko/Meeting-Room-Booking-API
 
 ---
 
