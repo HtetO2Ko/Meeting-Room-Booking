@@ -1,0 +1,53 @@
+<div
+  class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-950 to-indigo-950 flex flex-col justify-center items-center px-4 py-16 sm:px-6 lg:px-8 relative overflow-hidden"
+>
+  <div
+    class="absolute top-0 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"
+  ></div>
+  <div
+    class="absolute bottom-0 -right-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"
+  ></div>
+
+  <div class="max-w-md text-center mb-16 relative z-10">
+    <h1
+      class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-400 tracking-tight sm:text-5xl"
+    >
+      Choose Portal
+    </h1>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl w-full relative z-10">
+    @for (portal of portals; track portal.id) {
+    <div
+      class="group bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 hover:border-indigo-500/40 rounded-3xl p-8 flex flex-col justify-between shadow-xl hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden cursor-pointer"
+    >
+      <div>
+        <div
+          class="w-14 h-14 rounded-2xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition duration-300"
+        >
+          <i class="fa-regular fa-user text-xl text-white"></i>
+        </div>
+
+        <h2
+          class="text-2xl font-bold text-white mt-8 group-hover:text-indigo-300 transition duration-300"
+        >
+          {{ portal.name }}
+        </h2>
+
+        <p class="text-slate-400 text-sm mt-4 leading-relaxed">
+          {{ portal.description }}
+        </p>
+      </div>
+
+      <div class="mt-8 pt-6 border-t border-slate-800/80">
+        <button
+          (click)="navigateTo(portal)"
+          class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-bold text-sm rounded-xl transition duration-300 shadow-md shadow-indigo-600/20 focus:outline-none focus:ring-0"
+        >
+          Enter {{ portal.name }} Portal
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+</div>

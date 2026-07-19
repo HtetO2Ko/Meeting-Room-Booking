@@ -1,0 +1,642 @@
+<div
+  class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-950 to-indigo-950 relative overflow-hidden"
+>
+  <div
+    class="absolute top-0 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"
+  ></div>
+  <div
+    class="absolute bottom-0 -right-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"
+  ></div>
+
+  <header class="relative z-10 border-b border-slate-800/80 bg-slate-900/60 backdrop-blur-xl">
+    <div class="max-w-6xl mx-auto px-6 pt-6 pb-0">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-md shadow-indigo-500/30"
+          >
+            <i class="fa-solid fa-shield-halved text-white text-sm"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-extrabold text-white leading-none tracking-tight">
+              Admin Portal
+            </h1>
+            <p class="text-slate-500 text-xs mt-0.5">System Administration</p>
+          </div>
+        </div>
+
+        <button
+          (click)="goBack()"
+          class="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-slate-300 hover:bg-slate-700 hover:text-white transition-all duration-200 active:scale-95"
+        >
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+          <span class="text-sm font-semibold">Back</span>
+        </button>
+      </div>
+
+      <nav class="flex items-end gap-1">
+        <button
+          (click)="setTab('users')"
+          class="relative px-5 py-3 text-sm font-semibold transition-all duration-150 focus:outline-none focus:ring-0 active:scale-95 rounded-lg hover:bg-white/5"
+          [class]="activeTab() === 'users' ? 'text-white' : 'text-slate-500 hover:text-slate-300'"
+        >
+          <span class="flex items-center gap-2">
+            <i
+              class="fa-regular fa-user transition-transform duration-200"
+              [class]="activeTab() === 'users' ? 'text-indigo-400 scale-110' : ''"
+            ></i>
+            Users
+          </span>
+          @if (activeTab() === 'users') {
+          <span
+            class="absolute bottom-0 left-0 right-0 h-[2px] rounded-t-full bg-indigo-500"
+          ></span>
+          <span
+            class="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-indigo-400 blur-sm"
+          ></span>
+          }
+        </button>
+
+        <button
+          (click)="setTab('bookings')"
+          class="relative px-5 py-3 text-sm font-semibold transition-all duration-150 focus:outline-none focus:ring-0 active:scale-95 rounded-lg hover:bg-white/5"
+          [class]="
+            activeTab() === 'bookings' ? 'text-white' : 'text-slate-500 hover:text-slate-300'
+          "
+        >
+          <span class="flex items-center gap-2">
+            <i
+              class="fa-regular fa-calendar-check text-base transition-transform duration-200"
+              [class]="activeTab() === 'bookings' ? 'text-indigo-400 scale-110' : ''"
+            ></i>
+            Bookings
+          </span>
+          @if (activeTab() === 'bookings') {
+          <span
+            class="absolute bottom-0 left-0 right-0 h-[2px] rounded-t-full bg-indigo-500"
+          ></span>
+          <span
+            class="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-indigo-400 blur-sm"
+          ></span>
+          }
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-6xl mx-auto px-6 py-10">
+    @if (activeTab() === 'users') {
+    <div
+      class="bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl overflow-hidden shadow-2xl"
+    >
+      <div class="px-6 py-4 border-b border-slate-800/60 flex items-center justify-between">
+        <div>
+          <h2 class="text-sm font-bold text-white">User Accounts</h2>
+          <p class="text-slate-500 text-xs mt-0.5">{{ users().length }} registered</p>
+        </div>
+        <button
+          (click)="openCreateForm()"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white text-xs font-bold transition-all duration-150 shadow-lg shadow-indigo-500/20"
+        >
+          <i class="fa-solid fa-plus"></i>
+          Add User
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-950/40 border-b border-slate-800/50">
+              <th class="py-4 px-6 text-slate-400 font-bold text-xs uppercase tracking-wider">
+                Name
+              </th>
+              <th class="py-4 px-6 text-slate-400 font-bold text-xs uppercase tracking-wider">
+                Role
+              </th>
+              <th class="py-4 px-6 text-slate-400 font-bold text-xs uppercase tracking-wider">
+                Creation Date
+              </th>
+              <th
+                class="py-4 px-6 text-slate-400 font-bold text-xs uppercase tracking-wider text-right"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800/40">
+            @if (isLoading()) {
+            <tr>
+              <td colspan="5" class="py-16 text-center">
+                <div class="inline-flex flex-col items-center justify-center gap-3">
+                  <div class="relative w-10 h-10 flex items-center justify-center">
+                    <div
+                      class="w-10 h-10 rounded-full border-2 border-slate-700/50 border-t-indigo-500 animate-spin"
+                    ></div>
+                    <div
+                      class="absolute w-6 h-6 rounded-full border-2 border-slate-700/30 border-b-violet-400 animate-spin [animation-duration:0.6s] [animation-direction:reverse]"
+                    ></div>
+                  </div>
+                  <span
+                    class="text-slate-500 text-xs font-semibold tracking-wider animate-pulse uppercase"
+                    >Loading...</span
+                  >
+                </div>
+              </td>
+            </tr>
+            } @else { @for (user of users(); track user.id) {
+            <tr class="hover:bg-slate-800/20 transition duration-150 group">
+              <td class="py-3 px-6">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500/20 to-indigo-600/30 flex items-center justify-center font-bold text-indigo-400 text-sm border border-indigo-500/20"
+                  >
+                    {{ user.name.charAt(0) }}
+                  </div>
+                  <div>
+                    <span
+                      class="block font-bold text-white text-sm group-hover:text-indigo-200 transition duration-150"
+                      >{{ user.name }}</span
+                    >
+                  </div>
+                </div>
+              </td>
+
+              <td class="py-3 px-6">
+                @switch (user.role.toLowerCase()) { @case ('admin') {
+                <span
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/25 text-violet-400 text-xs font-semibold capitalize"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-violet-400"></span>
+                  {{ user.role }}
+                </span>
+                } @case ('owner') {
+                <span
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-semibold capitalize"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  {{ user.role }}
+                </span>
+                } @default {
+                <span
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold capitalize"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                  {{ user.role }}
+                </span>
+                } }
+              </td>
+
+              <td class="py-3 px-6 text-slate-400 text-sm">
+                {{ user.createdAt | date : 'mediumDate' }}
+              </td>
+              <td class="py-3 px-6 text-right">
+                <div class="inline-flex items-center gap-2 justify-end">
+                  <button
+                    (click)="openEditForm(user)"
+                    class="w-8 h-8 rounded-xl bg-indigo-500/10 border border-indigo-500/25 flex items-center justify-center text-indigo-400 hover:bg-indigo-500 hover:text-white transition duration-150 active:scale-95"
+                    title="Edit User Role"
+                  >
+                    <i class="fa-regular fa-pen-to-square text-sm"></i>
+                  </button>
+
+                  <button
+                    (click)="confirmDeleteUser(user)"
+                    class="w-8 h-8 rounded-xl bg-rose-500/10 border border-rose-500/25 flex items-center justify-center text-rose-450 hover:bg-rose-500 hover:text-white transition duration-150 active:scale-95"
+                    title="Delete User"
+                  >
+                    <i class="fa-regular fa-trash-can text-sm text-rose-400"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="5" class="py-12 text-center text-slate-500 text-sm">
+                <div class="flex flex-col items-center justify-center gap-2">
+                  <i class="fa-regular fa-folder-open text-2xl text-slate-600"></i>
+                  <span>No records found</span>
+                </div>
+              </td>
+            </tr>
+            } }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    } @if (activeTab() === 'bookings') {
+    <div class="mb-6 flex items-center justify-between">
+      <div>
+        <h2 class="text-xl font-bold text-white">Bookings</h2>
+        <p class="text-slate-500 text-xs mt-0.5">{{ bookings().length }} total bookings listed</p>
+      </div>
+    </div>
+
+    @if (isLoading()) {
+    <div class="py-24 flex items-center justify-center">
+      <div class="inline-flex flex-col items-center justify-center gap-3">
+        <div class="relative w-12 h-12 flex items-center justify-center">
+          <div
+            class="w-12 h-12 rounded-full border-2 border-slate-700/50 border-t-indigo-500 animate-spin"
+          ></div>
+          <div
+            class="absolute w-8 h-8 rounded-full border-2 border-slate-700/30 border-b-violet-400 animate-spin [animation-duration:0.6s] [animation-direction:reverse]"
+          ></div>
+        </div>
+        <span class="text-slate-500 text-xs font-semibold tracking-wider animate-pulse uppercase"
+          >Loading Data...</span
+        >
+      </div>
+    </div>
+    } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (booking of bookings(); track booking.id) {
+      <div
+        class="bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 rounded-3xl p-6 transition-all duration-300 hover:border-indigo-500/30 hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-1 group relative overflow-hidden"
+      >
+        <div class="relative z-10">
+          <div class="space-y-3">
+            <div
+              class="flex items-center gap-4 bg-slate-950/40 rounded-2xl p-4 border border-slate-800/50 group-hover:border-slate-700/60 transition-colors"
+            >
+              <div
+                class="w-8 h-8 rounded-full bg-slate-800/80 flex items-center justify-center border border-slate-700/50 text-slate-400 shrink-0"
+              >
+                <i class="fa-regular fa-clock text-xs"></i>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-0.5"
+                  >Start Time</span
+                >
+                <span class="text-sm font-semibold text-slate-200">
+                  {{ booking.startTime | date : 'MMM d, y, h:mm a' : 'UTC' }}
+                </span>
+              </div>
+            </div>
+
+            <div
+              class="flex items-center gap-4 bg-slate-950/40 rounded-2xl p-4 border border-slate-800/50 group-hover:border-slate-700/60 transition-colors"
+            >
+              <div
+                class="w-8 h-8 rounded-full bg-slate-800/80 flex items-center justify-center border border-slate-700/50 text-slate-400 shrink-0"
+              >
+                <i class="fa-solid fa-flag-checkered text-xs"></i>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-[10px] text-slate-500 uppercase font-bold tracking-wider mb-0.5"
+                  >End Time</span
+                >
+                <span class="text-sm font-semibold text-slate-200">{{
+                  booking.endTime | date : 'MMM d, y, h:mm a' : 'UTC'
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-800/60 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div
+                class="w-6 h-6 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700"
+              >
+                <i class="fa-regular fa-user text-[10px] text-slate-400"></i>
+              </div>
+            </div>
+
+            <button
+              (click)="confirmDeleteBooking(booking)"
+              class="flex items-center gap-2 px-3 py-2 rounded-xl bg-rose-500/10 border border-rose-500/25 text-rose-400 text-sm font-semibold hover:bg-rose-500 hover:text-white transition-all duration-200 active:scale-95"
+            >
+              <i class="fa-regular fa-trash-can"></i>
+              <span>Delete</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      } @empty {
+      <div
+        class="col-span-full py-20 flex flex-col items-center justify-center gap-4 bg-slate-900/20 rounded-[2rem] border border-slate-800/50 border-dashed"
+      >
+        <div
+          class="w-16 h-16 rounded-2xl bg-slate-800/50 flex items-center justify-center text-slate-500 mb-2 border border-slate-800"
+        >
+          <i class="fa-regular fa-calendar-xmark text-3xl"></i>
+        </div>
+        <h3 class="text-white font-bold text-lg">No Bookings Found</h3>
+      </div>
+      }
+    </div>
+    } }
+  </main>
+
+  @if (showCreateForm()) {
+  <div
+    class="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm"
+    (click)="closeCreateForm()"
+  ></div>
+
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+    <div
+      class="pointer-events-auto w-full max-w-md bg-slate-900/95 backdrop-blur-xl border border-slate-700/60 rounded-3xl shadow-2xl overflow-hidden"
+    >
+      <div class="flex items-center justify-between px-6 py-5 border-b border-slate-800/60">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400"
+          >
+            <i class="fa-solid fa-user-plus text-sm"></i>
+          </div>
+          <div>
+            <h2 class="text-sm font-bold text-white">Create New User</h2>
+          </div>
+        </div>
+        <button
+          (click)="closeCreateForm()"
+          class="w-8 h-8 flex items-center justify-center rounded-xl text-slate-500 hover:text-slate-300 hover:bg-white/5 transition duration-150"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="px-6 py-6 flex flex-col gap-5">
+        <div class="flex flex-col gap-2">
+          <label class="text-slate-400 text-xs font-bold uppercase tracking-wider">
+            Full Name
+          </label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+              <i class="fa-regular fa-user text-sm"></i>
+            </span>
+            <input
+              [(ngModel)]="formName"
+              type="text"
+              placeholder=""
+              class="w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-9 pr-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/30 transition duration-150"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-slate-400 text-xs font-bold uppercase tracking-wider"> Role </label>
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 z-10 pointer-events-none"
+            >
+              <i class="fa-solid fa-shield-halved text-sm"></i>
+            </span>
+            <select
+              [(ngModel)]="formRole"
+              class="w-full appearance-none bg-slate-800/60 border border-slate-700/60 rounded-xl pl-9 pr-10 py-3 text-sm text-white focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/30 transition duration-150 cursor-pointer"
+            >
+              @for (role of roles; track role) {
+              <option [value]="role" class="bg-slate-900 capitalize">{{ role }}</option>
+              }
+            </select>
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"
+            >
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 pb-6 flex items-center gap-3">
+        <button
+          (click)="closeCreateForm()"
+          class="flex-1 py-3 rounded-xl border border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-600 text-sm font-semibold transition duration-150 active:scale-95"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="submitCreateUser()"
+          [disabled]="isSubmitting() || !formName.trim()"
+          class="flex-1 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition-all duration-150 active:scale-95 shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2"
+        >
+          @if (isSubmitting()) {
+          <div
+            class="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"
+          ></div>
+          Creating... } @else {
+          <i class="fa-solid fa-check"></i>
+          Create User }
+        </button>
+      </div>
+    </div>
+  </div>
+  } @if (showEditForm()) {
+  <div class="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm" (click)="closeEditForm()"></div>
+
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+    <div
+      class="pointer-events-auto w-full max-w-md bg-slate-900/95 backdrop-blur-xl border border-slate-700/60 rounded-3xl shadow-2xl overflow-hidden"
+    >
+      <div class="flex items-center justify-between px-6 py-5 border-b border-slate-800/60">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400"
+          >
+            <i class="fa-regular fa-pen-to-square text-sm"></i>
+          </div>
+          <div>
+            <h2 class="text-sm font-bold text-white">Update User Role</h2>
+          </div>
+        </div>
+        <button
+          (click)="closeEditForm()"
+          class="w-8 h-8 flex items-center justify-center rounded-xl text-slate-500 hover:text-slate-350 hover:bg-white/5 transition duration-150"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="px-6 py-6 flex flex-col gap-5">
+        <div class="flex flex-col gap-2">
+          <label class="text-slate-400 text-xs font-bold uppercase tracking-wider">
+            Full Name
+          </label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
+              <i class="fa-regular fa-user text-sm"></i>
+            </span>
+            <input
+              [value]="editFormName"
+              type="text"
+              readonly
+              disabled
+              class="w-full bg-slate-850/40 border border-slate-800/40 rounded-xl pl-9 pr-4 py-3 text-sm text-slate-400 cursor-not-allowed focus:outline-none transition duration-150 opacity-60"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="text-slate-400 text-xs font-bold uppercase tracking-wider"> Role </label>
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 z-10 pointer-events-none"
+            >
+              <i class="fa-solid fa-shield-halved text-sm"></i>
+            </span>
+            <select
+              [(ngModel)]="editFormRole"
+              class="w-full appearance-none bg-slate-800/60 border border-slate-700/60 rounded-xl pl-9 pr-10 py-3 text-sm text-white focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/30 transition duration-150 cursor-pointer"
+            >
+              @for (role of roles; track role) {
+              <option [value]="role" class="bg-slate-900 capitalize">{{ role }}</option>
+              }
+            </select>
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none"
+            >
+              <i class="fa-solid fa-chevron-down text-xs"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 pb-6 flex items-center gap-3">
+        <button
+          (click)="closeEditForm()"
+          class="flex-1 py-3 rounded-xl border border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-600 text-sm font-semibold transition duration-150 active:scale-95"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="submitEditUser()"
+          [disabled]="isSubmitting()"
+          class="flex-1 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition-all duration-150 active:scale-95 shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2"
+        >
+          @if (isSubmitting()) {
+          <div
+            class="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"
+          ></div>
+          Saving... } @else {
+          <i class="fa-solid fa-check"></i>
+          Save Changes }
+        </button>
+      </div>
+    </div>
+  </div>
+  } @if (showDeleteConfirm()) {
+  <div
+    class="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm"
+    (click)="closeDeleteConfirm()"
+  ></div>
+
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+    <div
+      class="pointer-events-auto w-full max-w-md bg-slate-900/95 backdrop-blur-xl border border-slate-700/60 rounded-3xl shadow-2xl overflow-hidden"
+    >
+      <div class="flex items-center justify-between px-6 py-5 border-b border-slate-800/60">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 rounded-xl bg-rose-600/20 border border-rose-500/30 flex items-center justify-center text-rose-450"
+          >
+            <i class="fa-solid fa-user-slash text-sm"></i>
+          </div>
+          <div>
+            <h2 class="text-sm font-bold text-white">Delete User</h2>
+          </div>
+        </div>
+        <button
+          (click)="closeDeleteConfirm()"
+          class="w-8 h-8 flex items-center justify-center rounded-xl text-slate-500 hover:text-slate-300 hover:bg-white/5 transition duration-150"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="px-6 py-6 flex flex-col gap-3">
+        <p class="text-slate-300 text-sm">
+          Are you sure you want to delete user
+          <strong class="text-white">{{ userToDelete()?.name }}</strong
+          >?
+        </p>
+      </div>
+
+      <div class="px-6 pb-6 flex items-center gap-3">
+        <button
+          (click)="closeDeleteConfirm()"
+          class="flex-1 py-3 rounded-xl border border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-600 text-sm font-semibold transition duration-150 active:scale-95"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="submitDeleteUser()"
+          [disabled]="isSubmitting()"
+          class="flex-1 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition-all duration-150 active:scale-95 shadow-lg shadow-rose-500/20 flex items-center justify-center gap-2"
+        >
+          @if (isSubmitting()) {
+          <div
+            class="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"
+          ></div>
+          Deleting... } @else {
+          <i class="fa-regular fa-trash-can"></i>
+          Delete }
+        </button>
+      </div>
+    </div>
+  </div>
+  } @if (showDeleteBookingConfirm()) {
+  <div
+    class="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm"
+    (click)="closeDeleteBookingConfirm()"
+  ></div>
+
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+    <div
+      class="pointer-events-auto w-full max-w-md bg-slate-900/95 backdrop-blur-xl border border-slate-700/60 rounded-3xl shadow-2xl overflow-hidden"
+    >
+      <div class="flex items-center justify-between px-6 py-5 border-b border-slate-800/60">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 rounded-xl bg-rose-600/20 border border-rose-500/30 flex items-center justify-center text-rose-450"
+          >
+            <i class="fa-solid fa-calendar-xmark text-sm"></i>
+          </div>
+          <div>
+            <h2 class="text-sm font-bold text-white">Delete Booking</h2>
+          </div>
+        </div>
+        <button
+          (click)="closeDeleteBookingConfirm()"
+          class="w-8 h-8 flex items-center justify-center rounded-xl text-slate-500 hover:text-slate-300 hover:bg-white/5 transition duration-150"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="px-6 py-6 flex flex-col gap-3">
+        <p class="text-slate-300 text-sm">Are you sure you want to delete this booking?</p>
+      </div>
+
+      <div class="px-6 pb-6 flex items-center gap-3">
+        <button
+          (click)="closeDeleteBookingConfirm()"
+          class="flex-1 py-3 rounded-xl border border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-600 text-sm font-semibold transition duration-150 active:scale-95"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="submitDeleteBooking()"
+          [disabled]="isSubmitting()"
+          class="flex-1 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold transition-all duration-150 active:scale-95 shadow-lg shadow-rose-500/20 flex items-center justify-center gap-2"
+        >
+          @if (isSubmitting()) {
+          <div
+            class="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"
+          ></div>
+          Deleting... } @else {
+          <i class="fa-regular fa-trash-can"></i>
+          Delete }
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+
+  <app-alert
+    [isVisible]="alertVisible()"
+    (isVisibleChange)="alertVisible.set($event)"
+    [type]="alertType()"
+    [message]="alertMsg()"
+  />
+</div>
