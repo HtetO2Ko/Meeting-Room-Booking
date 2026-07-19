@@ -1,59 +1,142 @@
-# MeetingRoomBooking
+# Meeting Room Booking System Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.32.
+An Angular + TypeScript frontend for the Meeting Room Booking System.
 
-## Development server
+This application communicates with the backend REST API and provides role-based functionality for Admin, Owner, and User.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## 🌐 Live Deployment Access
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+**Application URL:** `https://meeting-room-booking-six-pi.vercel.app`
 
-## Code scaffolding
+**Backend API:** `https://meeting-room-booking-api-production.up.railway.app`
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+## 🚀 Features
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Angular
+- TypeScript
+- Role-based interface
+- Meeting room booking management
+- Booking creation
+- Booking listing
+- Booking deletion based on user permissions
+- User management (Admin only)
+- Booking summary (Admin)
+- View Booking by User Grouped (Admin)
+- Responsive UI
+- REST API integration
+- Form validation and error handling
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## 📦 Tech Stack
 
-To build the project run:
+- Angular
+- TypeScript
+- Angular Router
+- Angular HttpClient
+- RxJS
+- Tailwind CSS
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## 📁 Project Structure
 
 ```bash
-ng e2e
+src/
+│
+├── app/
+│   ├── care/
+│   ├── layout/
+│   ├── shared/
+│   ├── app.config.server.ts
+│   ├── app.config.ts
+│   ├── app.css
+│   ├── app.html
+│   ├── app.routes.server.ts
+│   └── app.routes.ts
+│   └── app.spec.ts
+│   └── app.ts
+│
+├── env/
+└── index.html
+└── main.server.ts
+└── main.ts
+└── server.ts
+└── styles.css
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## ⚙️ Installation
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Clone the repository:
+
+```bash
+git clone https://github.com/HtetO2Ko/Meeting-Room-Booking.git
+```
+
+Move into the project folder:
+
+```bash
+cd Meeting-Room-Booking
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+---
+
+## ▶️ Run Development Server
+
+```bash
+npm start
+```
+
+Application will run on:
+
+```text
+http://localhost:4200
+```
+
+---
+
+## 👤 Role Selection
+
+For this assessment, a traditional login screen is **not implemented**.
+
+Instead, the application provides **three predefined users** that allow the evaluator to easily switch between roles and test different permission levels.
+
+Available roles:
+
+- Admin
+- Owner
+- User
+
+Simply select one of the predefined users from the home page to access the application with the corresponding permissions.
+
+This approach satisfies the assessment requirement of clearly distinguishing user roles while keeping authentication simple.
+
+---
+
+## 🔗 Backend Repository
+
+https://github.com/HtetO2Ko/Meeting-Room-Booking-API.git
+
+---
+
+## 📮 API Documentation
+
+Please import the provided Postman Collection (`.json`) into Postman.
+
+Backend API Base URL:
+
+```text
+https://meeting-room-booking-api-production.up.railway.app
+```
